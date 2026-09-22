@@ -1,0 +1,15 @@
+# Kredensial & rahasia
+config/config.local.php
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Zip rilis
+sw.zip
+
+# Backup database (jangan pernah di-commit: berisi data pribadi peserta)
+backups/*.sql
+
+# File verifikasi Google Search Console (tidak perlu ada di repo)
+google*.html

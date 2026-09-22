@@ -1,0 +1,44 @@
+# ============================================================
+# Kompresi & cache browser — percepat load di shared hosting
+# (Apache dengan mod_deflate + mod_expires; aman bila modul mati)
+# ============================================================
+
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json application/xml image/svg+xml
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    # Aset statis: cache agresif di browser (1 bulan)
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 month"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    # HTML & JSON: selalu segar
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # PHP: jangan cache halaman dinamis
+    <FilesMatch "\.(php|json)$">
+        Header set Cache-Control "no-store, no-cache, must-revalidate"
+    </FilesMatch>
+    # Aset statis: cache lama + izinkan kompresi proxy
+    <FilesMatch "\.(css|js|png|jpg|jpeg|gif|svg|webp|ico|woff2?)$">
+        Header set Cache-Control "public, max-age=2592000"
+    </FilesMatch>
+</IfModule>
+
+# Force HTTPS (bila hosting sudah punya SSL — comment out bila belum)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

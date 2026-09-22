@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline &middot; Kearsipan Kutai Kartanegara</title>
+<style>
+:root { --green-700: #0f4d33; --paper: #fff; --canvas: #f3f5f3; --ink: #171a16; --ink-2: #454a43; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: Inter, "Segoe UI", system-ui, sans-serif;
+    padding: 24px;
+}
+.card {
+    max-width: 420px;
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid #d0d5ce;
+    border-top: 4px solid var(--green-700);
+    border-radius: 12px;
+    padding: 40px 32px;
+    text-align: center;
+    box-shadow: 0 12px 28px rgba(20,24,20,.12);
+}
+.icon {
+    width: 72px; height: 72px;
+    margin: 0 auto 20px;
+    background: #eef6f1;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--green-700);
+}
+h1 { font-size: 1.4rem; margin-bottom: 8px; }
+p { color: var(--ink-2); font-size: .95rem; line-height: 1.6; margin-bottom: 24px; }
+button {
+    background: var(--green-700);
+    color: #fff;
+    border: 0;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+button:hover { opacity: .9; }
+</style>
+</head>
+<body>
+<main class="card">
+    <div class="icon" aria-hidden="true">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="1" y1="1" x2="23" y2="23"/>
+            <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+            <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+            <path d="M10.71 5.05A16 16 0 0 1 22.58 9"/>
+            <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+            <line x1="12" y1="20" x2="12.01" y2="20"/>
+        </svg>
+    </div>
+    <h1>Koneksi Terputus</h1>
+    <p>Anda sedang offline. Periksa koneksi internet Anda lalu coba muat ulang halaman.</p>
+    <button onclick="location.reload()">Muat Ulang</button>
+</main>
+</body>
+</html>

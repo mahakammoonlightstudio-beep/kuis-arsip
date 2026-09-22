@@ -1,0 +1,321 @@
+/* ==========================================================================
+   Kuis Arsip (htdocs) - Professional Polish Layer
+   Dipakai SETELAH assets/style.css (ditimpa secara halus).
+   Nuansa instansi: hijau tua #0f4d33 + emas #a67c15 tetap menjadi identitas.
+   ========================================================================== */
+
+/* 1. TOKEN ----------------------------------------------------------------- */
+:root {
+    --pro-radius: 14px;
+    --pro-panel-border: 1px solid var(--line, #d7ddd8);
+    --pro-shadow:
+        0 1px 2px rgba(20, 30, 24, 0.05),
+        0 4px 14px rgba(20, 30, 24, 0.07);
+    --pro-shadow-hover:
+        0 2px 4px rgba(20, 30, 24, 0.07),
+        0 12px 28px rgba(20, 30, 24, 0.12);
+}
+
+/* 2. TIPOGRAFI -------------------------------------------------------------- */
+body {
+    letter-spacing: 0.005em;
+}
+
+h1, h2, h3 {
+    letter-spacing: -0.015em;
+}
+
+/* Angka tabular agar kolom tabel & angka laporan rata */
+.data td, .metric dd, .lb-score, .result-card dd, .nav-count, .notif-time {
+    font-variant-numeric: tabular-nums;
+}
+
+/* 3. MASTHEAD & NAVIGASI ----------------------------------------------------- */
+.masthead {
+    backdrop-filter: saturate(1.4);
+}
+
+.topbar-inner .nav-links > a {
+    font-weight: 600;
+    font-size: 0.8125rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background-color 140ms ease, color 140ms ease;
+}
+
+.topbar-inner .nav-links > a:hover {
+    background: rgba(15, 77, 51, 0.08);
+}
+
+.topbar-inner .nav-links > a[aria-current="page"] {
+    background: var(--green-700, #16694a);
+    color: #fff;
+}
+
+[data-theme="dark"] .topbar-inner .nav-links > a:hover {
+    background: rgba(122, 199, 160, 0.12);
+}
+
+/* Tombol ganti bahasa (ID/EN) */
+.lang-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 30px;
+    padding: 0 8px;
+    border: 1px solid var(--line-strong, #b9c2bb);
+    border-radius: 9999px;
+    font-family: inherit;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--green-700, #16694a);
+    background: var(--paper, #fff);
+    transition: border-color 140ms ease, background-color 140ms ease;
+}
+
+.lang-toggle:hover {
+    border-color: var(--green-600, #1d8259);
+    background: rgba(15, 77, 51, 0.08);
+    color: var(--green-700, #16694a);
+}
+
+[data-theme="dark"] .lang-toggle {
+    color: #9ccfae;
+}
+
+[data-theme="dark"] .lang-toggle:hover {
+    background: rgba(122, 199, 160, 0.12);
+}
+
+/* Tombol ikon (lonceng notifikasi) */
+.icon-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    color: inherit;
+    opacity: 0.85;
+    transition: background-color 140ms ease, opacity 140ms ease;
+}
+
+.icon-btn:hover {
+    background: rgba(15, 77, 51, 0.08);
+    opacity: 1;
+}
+
+.notif-dot {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    border-radius: 9999px;
+    background: #b3261e;
+    color: #fff;
+    font-size: 0.625rem;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+}
+
+.nav-badge {
+    display: inline-block;
+    min-width: 18px;
+    padding: 0 5px;
+    margin-left: 4px;
+    border-radius: 9999px;
+    background: var(--gold-600, #a67c15);
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 18px;
+}
+
+/* 4. PANEL & KARTU ------------------------------------------------------------ */
+.panel {
+    border-radius: var(--pro-radius);
+    box-shadow: var(--pro-shadow);
+    border: var(--pro-panel-border);
+}
+
+.panel > header {
+    border-bottom: 1px solid var(--line, #d7ddd8);
+    background: linear-gradient(180deg, rgba(15, 77, 51, 0.05), transparent);
+}
+
+[data-theme="dark"] .panel > header {
+    background: linear-gradient(180deg, rgba(122, 199, 160, 0.07), transparent);
+}
+
+/* 5. TABEL DATA ---------------------------------------------------------------- */
+.data th {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.75;
+    border-bottom: 2px solid var(--line, #d7ddd8);
+}
+
+.data tbody tr:hover td {
+    background: rgba(15, 77, 51, 0.05);
+}
+
+[data-theme="dark"] .data tbody tr:hover td {
+    background: rgba(122, 199, 160, 0.07);
+}
+
+/* 6. NOTIFIKASI ------------------------------------------------------------------ */
+.notif-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.notif-item {
+    display: flex;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line, #d7ddd8);
+    align-items: flex-start;
+}
+
+.notif-item:last-child {
+    border-bottom: none;
+}
+
+.notif-item.unread {
+    background: rgba(15, 77, 51, 0.06);
+    box-shadow: inset 3px 0 0 var(--green-700, #16694a);
+}
+
+[data-theme="dark"] .notif-item.unread {
+    background: rgba(122, 199, 160, 0.09);
+}
+
+.notif-icon {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    background: rgba(42, 90, 134, 0.12);
+    color: #2a5a86;
+}
+
+.notif-item.jenis-success .notif-icon { background: rgba(38, 137, 12, 0.14); color: #1b6b46; }
+.notif-item.jenis-warning .notif-icon { background: rgba(216, 158, 0, 0.16); color: #7a5a0d; }
+.notif-item.jenis-danger  .notif-icon { background: rgba(226, 27, 60, 0.12); color: #a11d31; }
+
+.notif-main {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.notif-title {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.notif-body {
+    opacity: 0.85;
+    margin-top: 2px;
+    overflow-wrap: break-word;
+}
+
+.notif-time {
+    opacity: 0.6;
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+
+.notif-actions {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+/* 7. FORMULIR ---------------------------------------------------------------------- */
+textarea {
+    font-family: inherit;
+    width: 100%;
+    resize: vertical;
+}
+
+select, input {
+    transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+select:focus, input:focus {
+    outline: 2px solid var(--gold-500, #a67c15);
+    outline-offset: 1px;
+}
+
+.field.agree {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.field.agree input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--green-700, #16694a);
+}
+
+.hint {
+    display: block;
+    opacity: 0.65;
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
+
+/* 8. MISC --------------------------------------------------------------------------- */
+.notice {
+    border-radius: 10px;
+}
+
+.empty {
+    opacity: 0.6;
+    text-align: center;
+    padding: 32px 16px;
+}
+
+.page-head h1 {
+    margin-bottom: 4px;
+}
+
+/* 9. RESPONSIVE ------------------------------------------------------------------------ */
+@media (max-width: 767px) {
+    .notif-item {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .notif-actions {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
+
+@media print {
+    .icon-btn, .lang-toggle, .notif-dot, .notif-actions { display: none !important; }
+}

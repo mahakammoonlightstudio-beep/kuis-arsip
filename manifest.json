@@ -1,0 +1,34 @@
+{
+  "id": "/",
+  "name": "Sistem Kuesioner & Evaluasi Kearsipan Diarpus Kukar",
+  "short_name": "Kearsipan Kukar",
+  "description": "Sistem kuesioner dan evaluasi kearsipan Dinas Kearsipan dan Perpustakaan Kabupaten Kutai Kartanegara",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#0f4d33",
+  "lang": "id",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "assets/img/logo-kukar.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/logo-kukar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/logo-kukar.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

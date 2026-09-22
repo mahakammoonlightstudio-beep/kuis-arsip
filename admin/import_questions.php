@@ -1,0 +1,214 @@
+<?php
+require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../includes/layout.php';
+
+if (!is_logged_in() || $_SESSION['role'] !== 'admin') {
+    header('Location: ../auth/login.php');
+    exit;
+}
+
+$survey_id = (int)($_GET['survey_id'] ?? 0);
+if ($survey_id === 0) {
+    header('Location: surveys.php');
+    exit;
+}
+
+$imported = false;
+$success_count = 0;
+$error_count = 0;
+$upload_error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['csv_file'])) {
+    csrf_verify();
+    $file = $_FILES['csv_file']['tmp_name'];
+
+    if ($_FILES['csv_file']['error'] === 0) {
+        $handle = fopen($file, "r");
+        fgetcsv($handle, 1000, ",");
+
+        $stmt = $pdo->prepare("INSERT INTO questions (survey_id, category, question, option_a, option_b, option_c, option_d, option_e, correct_answer, explanation) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        while (($row = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if (count($row) == 7) {
+                $correct = strtoupper(trim($row[6]));
+                if (in_array($correct, ['A', 'B', 'C', 'D', 'E'])) {
+                    $stmt->execute([
+                        $survey_id, 'Umum',
+                        trim($row[0]), trim($row[1]), trim($row[2]), trim($row[3]),
+                        trim($row[4]), trim($row[5]), $correct, null
+                    ]);
+                    $success_count++;
+                } else {
+                    $error_count++;
+                }
+            } else {
+                $error_count++;
+            }
+        }
+        fclose($handle);
+        $imported = true;
+    } else {
+        $upload_error = "Terjadi kesalahan saat mengunggah file.";
+    }
+}
+
+if (isset($_GET['action']) && $_GET['action'] == 'download_template') {
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=template_soal_kearsipan.csv');
+
+    $output = fopen('php://output', 'w');
+    fputcsv($output, ['Pertanyaan', 'Opsi A', 'Opsi B', 'Opsi C', 'Opsi D', 'Opsi E', 'Kunci Jawaban (A/B/C/D/E)']);
+    fputcsv($output, ['Contoh: Apa kepanjangan dari ANRI?', 'Arsip Nasional Republik Indonesia', 'Arsip Nasional Rakyat Indonesia', 'Arah Nasional Republik Indonesia', 'Arsip Nusantara Republik Indonesia', 'Arsip Negara Rakyat Indonesia', 'A']);
+    fclose($output);
+    exit;
+}
+
+$open_tickets = (int)$pdo->query("SELECT COUNT(*) FROM tickets WHERE status = 'open'")->fetchColumn();
+
+layout_header([
+    'title'  => 'Impor Soal',
+    'active' => 'surveys',
+    'role'   => 'admin',
+    'tickets' => $open_tickets,
+]);
+?>
+
+
+<section class="panel">
+    <header>
+        <h2>Impor Soal Massal</h2>
+        <p>Masukkan banyak soal sekaligus melalui berkas <span class="format-badge">CSV</span>.</p>
+    </header>
+    <div class="panel-body">
+        <a class="btn-sm btn-quiet" href="questions.php?survey_id=<?= $survey_id ?>">&larr; Kembali ke daftar soal</a>
+
+        <?php if ($imported): ?>
+        <div class="import-result" role="status">
+            <p class="notice notice-ok no-auto-dismiss"><strong>Impor selesai.</strong> Berikut ringkasan hasil impor:</p>
+            <dl class="import-stats">
+                <div class="import-stat import-stat-ok">
+                    <dd><?= $success_count ?></dd>
+                    <dt>Berhasil</dt>
+                </div>
+                <div class="import-stat import-stat-err">
+                    <dd><?= $error_count ?></dd>
+                    <dt>Gagal</dt>
+                </div>
+            </dl>
+        </div>
+        <?php elseif ($upload_error): ?>
+            <p class="notice notice-error no-auto-dismiss"><?= e($upload_error) ?></p>
+        <?php endif; ?>
+
+        <div class="panel">
+            <header><h3>Cara Impor</h3></header>
+            <div class="panel-body">
+                <ol class="steps-list">
+                    <li>Unduh berkas templat <span class="format-badge">CSV</span> di bawah ini.</li>
+                    <li>Buka dengan Microsoft Excel atau Google Sheets.</li>
+                    <li>Masukkan soal-soal. <strong>Jangan ubah baris pertama (judul kolom)</strong>.</li>
+                    <li>Pastikan kolom "Kunci Jawaban" diisi huruf A, B, C, D, atau E (kapital).</li>
+                    <li>Simpan ulang sebagai <span class="format-badge">CSV</span>.</li>
+                    <li>Tarik berkas ke area unggah di bawah.</li>
+                </ol>
+                <div class="btn-row">
+                    <a class="btn-sm" href="import_questions.php?action=download_template&survey_id=<?= $survey_id ?>">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Unduh templat CSV
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" id="importForm">
+            <?= csrf_field() ?>
+            <label class="upload-zone" id="uploadZone" for="csv_file">
+                <span class="upload-zone-icon" aria-hidden="true">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <span class="upload-zone-title">Tarik & letakkan berkas di sini</span>
+                <span class="upload-zone-hint">atau klik untuk memilih berkas <span class="format-badge">CSV</span> dari perangkat Anda. Maksimal ukuran mengikuti setelan server.</span>
+                <span class="file-preview" id="filePreview">
+                    <span class="file-preview-icon" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </span>
+                    <span class="file-preview-name" id="fileName"></span>
+                    <span class="file-preview-size" id="fileSize"></span>
+                    <button type="button" class="file-preview-remove" id="fileRemove" aria-label="Hapus berkas terpilih">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </span>
+                <input id="csv_file" class="file-input-hidden" type="file" name="csv_file" accept=".csv" required>
+            </label>
+            <div class="btn-row" style="margin-top: var(--s4);">
+                <button type="submit" class="btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Unggah & impor
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<?php layout_footer(['base' => '..', 'scripts' => '
+<script>
+(function () {
+    var zone = document.getElementById("uploadZone");
+    var input = document.getElementById("csv_file");
+    var preview = document.getElementById("filePreview");
+    var nameEl = document.getElementById("fileName");
+    var sizeEl = document.getElementById("fileSize");
+    var removeBtn = document.getElementById("fileRemove");
+    if (!zone || !input) return;
+
+    function formatSize(bytes) {
+        if (bytes < 1024) return bytes + " B";
+        if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+        return (bytes / 1048576).toFixed(1) + " MB";
+    }
+
+    function showFile(file) {
+        nameEl.textContent = file.name;
+        sizeEl.textContent = formatSize(file.size);
+        preview.classList.add("visible");
+    }
+
+    function clearFile() {
+        input.value = "";
+        preview.classList.remove("visible");
+    }
+
+    input.addEventListener("change", function () {
+        if (input.files.length > 0) showFile(input.files[0]);
+    });
+
+    removeBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        clearFile();
+    });
+
+    ["dragenter", "dragover"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) {
+            e.preventDefault();
+            zone.classList.add("is-dragover");
+        });
+    });
+
+    ["dragleave", "drop"].forEach(function (ev) {
+        zone.addEventListener(ev, function (e) {
+            e.preventDefault();
+            zone.classList.remove("is-dragover");
+        });
+    });
+
+    zone.addEventListener("drop", function (e) {
+        if (e.dataTransfer.files.length > 0) {
+            input.files = e.dataTransfer.files;
+            showFile(input.files[0]);
+        }
+    });
+})();
+</script>
+']); ?>
