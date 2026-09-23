@@ -11,6 +11,12 @@
 
 ---
 
+## Status Lisensi
+
+Repositori ini disediakan terbuka semata-mata untuk keperluan **dokumentasi dan portofolio**. Perangkat lunak ini **TIDAK open source** - lihat berkas [LICENSE](LICENSE) untuk ketentuan lengkap: dilarang menyalin, memodifikasi, mendistribusikan, men-deploy, atau menggunakannya untuk keperluan komersial tanpa izin tertulis dari pemilik hak cipta.
+
+---
+
 ## 1. Pemilik Hak Cipta & Data
 
 > **Nama:** Varia Fadillah, S.P., M.M.
@@ -89,7 +95,7 @@ Perangkat lunak ini mencakup fitur-fitur berikut yang termasuk dalam cakupan hak
 | Google Fonts (Inter, Source Serif 4) | SIL OFL | fonts.google.com |
 | Chart.js | MIT | chartjs.org |
 
-## 6. Penafian (Disclaimer)
+## 9. Penafian (Disclaimer)
 
 Perangkat lunak ini disediakan **"sebagaimana adanya" (as-is)** tanpa jaminan apa pun, baik tersurat maupun tersirat, termasuk namun tidak terbatas pada jaminan kelayakan untuk keperluan tertentu dan ketidakpelanggaran.
 
@@ -100,14 +106,14 @@ Pengguna bertanggung jawab penuh atas penggunaan aplikasi ini. Pembuat dan pemil
 - Penyalahgunaan data peserta oleh pihak ketiga;
 - Gangguan layanan akibat batasan hosting (InfinityFree).
 
-## 7. Kebijakan Privasi & Data Peserta
+## 10. Kebijakan Privasi & Data Peserta
 
 1. **Data yang dikumpulkan:** NIM/NIP, nama, jawaban kuis, skor, dan waktu pengerjaan.
 2. **Tujuan:** Penyimpanan hasil, papan peringkat, analitik admin, dan sertifikat.
 3. **Hak Peserta:** Dapat meminta penghapusan data melalui kontak admin.
 4. **Cookie:** Hanya session cookie (HTTPOnly, Secure, SameSite=Lax).
 
-## 8. Kontak & Dukungan
+## 11. Kontak & Dukungan
 
 **Untuk pertanyaan teknis / pengembangan:**
 

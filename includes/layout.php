@@ -197,7 +197,7 @@ function layout_footer(array $o = []): void
         <div class="credit-row">
             <span class="credit-item">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                &copy; <?= date('Y') ?> Dinas Kearsipan dan Perpustakaan Kabupaten Kutai Kartanegara.
+                &copy; <?= date('Y') ?> Dinas Kearsipan dan Perpustakaan Kabupaten Kutai Kartanegara (Bidang P2A). Seluruh hak cipta dilindungi - perangkat lunak milik instansi dan dilarang digunakan tanpa izin tertulis.
             </span>
             <span class="credit-separator" aria-hidden="true">|</span>
             <span class="credit-item">
