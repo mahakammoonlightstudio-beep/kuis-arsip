@@ -6,6 +6,8 @@ Sistem kuesioner dan evaluasi kearsipan untuk Dinas Kearsipan dan Perpustakaan (
 
 ![License](https://img.shields.io/badge/License-All%20Rights%20Reserved-red) ![PHP](https://img.shields.io/badge/PHP-8%2B-777bb3) ![MySQL](https://img.shields.io/badge/DB-MySQL%20%2F%20MariaDB-4479a1) ![PWA](https://img.shields.io/badge/PWA-ready-5a0fc8)
 
+> **PERNYATAAN KEPEMILIKAN** - Perangkat lunak ini dimiliki oleh **Dinas Kearsipan dan Perpustakaan Kab. Kutai Kartanegara (Bidang P2A)**. Repositori ini bukan open source: menyalin, memodifikasi, men-deploy, mendistribusikan, atau menggunakan kode ini tanpa izin tertulis merupakan **pelanggaran hak cipta**. Mem-fork repositori ini tidak memberikan hak penggunaan apa pun. Lihat [LICENSE](LICENSE).
+
 ## Fitur
 
 - **Kuesioner terstruktur** - pengerjaan individu atau ruangan terjadwal; penilaian otomatis.
