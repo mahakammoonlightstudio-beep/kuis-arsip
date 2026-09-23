@@ -1,0 +1,15 @@
+Kuis Arsip: sistem kuesioner dan sertifikat digital untuk Dinas Kearsipan dan Perpustakaan (Diarpus) Kabupaten Kutai Kartanegara, Bidang P2A.
+
+Dibangun untuk kebutuhan instansi yang sesungguhnya:
+
+- Kuesioner terjadwal dengan mode ruangan dan individu
+- Sertifikat digital berkode unik yang bisa diverifikasi publik
+- Proctoring sederhana untuk menjaga integritas pengisian
+- Panel admin untuk pengelolaan soal, batch, dan peserta
+
+Perangkat lunak ini milik instansi dan tidak untuk digunakan tanpa izin tertulis - repo publiknya saya buka khusus sebagai dokumentasi dan portofolio teknis.
+
+Coba lihat: https://kuis-arsip.rf.gd/
+Dokumentasi: https://github.com/mahakammoonlightstudio-beep/kuis-arsip
+
+#PHP #MySQL #GovTech #eGovernment #SoftwareDevelopment
