@@ -1,79 +1,96 @@
-# Kuis Arsip — Sistem Kuesioner & Evaluasi Kearsipan
+# Kuis Arsip - Sistem Kuesioner dan Evaluasi Kearsipan
 
-> Sistem kuesioner & evaluasi kearsipan untuk **Dinas Kearsipan dan Perpustakaan (Diarpus) Kabupaten Kutai Kartanegara**.
-> Stack: **PHP 8+ native + MySQL/MariaDB + Vanilla JS + CSS murni** — tanpa framework, target hosting InfinityFree.
+Sistem kuesioner dan evaluasi kearsipan untuk Dinas Kearsipan dan Perpustakaan (Diarpus) Kabupaten Kutai Kartanegara. Peserta mengerjakan survei secara individu atau di ruangan terjadwal, hasil dinilai otomatis, dan sertifikat dapat diterbitkan serta diverifikasi publik. Dibangun dengan PHP 8+ native, MySQL/MariaDB, Vanilla JS, dan CSS murni tanpa framework.
 
-🔗 **Situs resmi:** https://kuis-arsip.rf.gd/
+**Live: <https://kuis-arsip.rf.gd/>**
 
-## ✨ Fitur
+![PHP](https://img.shields.io/badge/PHP-8%2B-777bb3) ![MySQL](https://img.shields.io/badge/DB-MySQL%20%2F%20MariaDB-4479a1) ![PWA](https://img.shields.io/badge/PWA-ready-5a0fc8)
 
-- **Kuesioner kearsipan terstruktur** — peserta mengerjakan survei secara individu atau di **ruangan terjadwal**; hasil dinilai otomatis.
-- **Sertifikat otomatis** — terbit setelah lulus, dengan **verifikasi publik** via `quiz/verify.php`.
+## Fitur
+
+- **Kuesioner terstruktur** - pengerjaan individu atau ruangan terjadwal; penilaian otomatis.
+- **Sertifikat otomatis** - terbit setelah lulus, dengan verifikasi publik melalui `quiz/verify.php`.
 - **Dua role pengguna**:
   | Role | Akses |
   |---|---|
   | `admin` | Dasbor, kelola peserta/kuesioner/ruangan/soal, analitik, helpdesk, broadcast, audit log, ekspor laporan |
-  | `peserta` | Beranda kuesioner, kerjakan survei, riwayat, sertifikat, bantuan, pengaturan |
-- **Multi-bahasa (ID/EN)** — prioritas: akun user → cookie → setelan admin.
-- **Notifikasi & broadcast** — lonceng + badge di header.
-- **Pengaturan sistem** — nama situs, registrasi on/off, mode pemeliharaan, bahasa default.
-- **Keamanan** — CSRF, rate limit login, security headers, prepared statements, audit log batch.
-- **PWA** — installable & offline-ready.
+  | `peserta` | Beranda kuesioner, pengerjaan survei, riwayat, sertifikat, bantuan, pengaturan |
+- **Multi-bahasa (ID/EN)** - prioritas: akun pengguna, cookie, lalu setelan admin.
+- **Notifikasi dan broadcast** - lonceng dengan badge di header.
+- **Pengaturan sistem** - nama situs, registrasi on/off, mode pemeliharaan, bahasa default.
+- **Keamanan** - CSRF, rate limit login, security headers, prepared statements, audit log.
+- **PWA** - dapat dipasang dan berfungsi offline.
 
-## 🛠️ Teknologi
+## Persyaratan
 
-- PHP 8+ native (tanpa framework)
-- MySQL / MariaDB
-- Vanilla JavaScript, CSS murni
-- Service Worker + Web App Manifest (PWA)
+- PHP 8.0 atau lebih baru dengan ekstensi `pdo_mysql`, `mbstring`
+- MySQL 5.7 / MariaDB 10.4 atau lebih baru
 
-## 🚀 Menjalankan Secara Lokal (XAMPP)
+## Instalasi
 
-1. Salin folder ini ke `htdocs/`.
-2. Import `database.sql` ke database baru via phpMyAdmin, lalu jalankan `database-upgrade.sql` dan `database_indexes.sql`.
-3. Salin template konfigurasi:
+1. Salin proyek ke folder web server:
+
+   ```bash
+   git clone https://github.com/mahakammoonlightstudio-beep/kuis-arsip.git
+   ```
+
+2. Impor skema ke database baru:
+
+   ```bash
+   mysql -u USER -p NAMA_DATABASE < database.sql
+   mysql -u USER -p NAMA_DATABASE < database-upgrade.sql
+   mysql -u USER -p NAMA_DATABASE < database_indexes.sql
+   ```
+
+3. Salin template konfigurasi dan isi kredensial:
 
    ```bash
    cp config/config.local.example.php config/config.local.php
    ```
 
-   lalu isi `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`.
-4. Buka `http://localhost/kuis arsip/` dan login dengan akun admin dari seed `database.sql` — **segera ganti password default setelah login**.
+   Berkas `config.local.php` terdaftar di `.gitignore` dan tidak boleh ikut ke repositori.
 
-## 📚 Dokumentasi
+4. Buka aplikasi, login dengan akun admin dari seed `database.sql`, dan segera ganti password default.
 
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** — panduan lengkap: isi setiap folder, fungsi setiap file, alur data, dan konvensi kode. Wajib dibaca sebelum mengembangkan.
-- **[LISENSI.md](LISENSI.md)** — status hak cipta & kepemilikan.
+## Menjalankan secara lokal
 
-## 📁 Struktur Utama
+PHP bawaan cukup untuk pengembangan:
+
+```bash
+php -S localhost:8000
+```
+
+Pengguna Laravel Herd (macOS/Windows) dapat memakai biner PHP yang terpasang, misalnya `~/.config/herd/bin/php84/php.exe` pada Windows.
+
+## Dokumentasi
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) - panduan arsitektur: isi tiap folder, fungsi tiap berkas, alur data, dan konvensi kode.
+- [LISENSI.md](LISENSI.md) - status hak cipta dan kepemilikan.
+
+## Struktur Proyek
 
 ```
 kuis arsip/
-├── index.php          # Router masuk: admin → dasbor, lainnya → quiz
-├── admin/             # Modul admin (users, questions, rooms, analitik, dst.)
+├── index.php          # Router masuk: admin ke dasbor, lainnya ke quiz
+├── admin/             # Modul admin (users, questions, rooms, analitik, dll.)
 ├── auth/              # Login, register, profil, reset password, notifikasi
 ├── quiz/              # Pengerjaan survei, hasil, sertifikat, verifikasi
 ├── api/               # Endpoint berita
 ├── config/            # database.php + config.local.php (tidak di-commit)
 ├── includes/          # Layout, bahasa, backup
-├── assets/            # CSS & JS
+├── assets/            # CSS dan JS
 ├── backups/           # Backup DB otomatis (dilindungi .htaccess, tidak di-commit)
-├── database.sql       # Skema + seed
-├── database-upgrade.sql & database_indexes.sql
+├── database.sql       # Skema dan seed
+├── database-upgrade.sql
+├── database_indexes.sql
 └── sw.js              # Service worker
 ```
 
-## ☁️ Deploy ke InfinityFree
+## Catatan Keamanan
 
-1. Upload semua file ke `htdocs/`, buat `config/config.local.php` langsung di server.
-2. Buat database MySQL, import ketiga file SQL.
-3. Aktifkan mode pemeliharaan dulu saat setup awal jika perlu (dari Pengaturan Sistem).
+- `config/config.local.php` tidak pernah di-commit; dicegah lewat `.gitignore`.
+- Isi folder `backups/` (dump database berisi data pribadi peserta) juga dikecualikan dari repositori.
 
-## 🔒 Catatan Keamanan
+## Lisensi
 
-- `config/config.local.php` **tidak pernah di-commit** — dicegah lewat `.gitignore`.
-- Isi folder `backups/` (dump database berisi data pribadi peserta) juga dikecualikan dari repo.
-
----
-
-Hak cipta © 2026 — dimiliki oleh **Dinas Kearsipan dan Perpustakaan Kab. Kutai Kartanegara** (pemilik: Varia Fadillah, S.P., M.M.). Dikembangkan oleh Muhammad Fauzan Raffa Al-Habsy — SMKN 1 Tenggarong, RPL. Lihat [LISENSI.md](LISENSI.md).
+Hak cipta 2026 - dimiliki Dinas Kearsipan dan Perpustakaan Kab. Kutai Kartanegara (pemilik: Varia Fadillah, S.P., M.M.). Dikembangkan oleh Muhammad Fauzan Raffa Al-Habsy, SMKN 1 Tenggarong. Lihat [LISENSI.md](LISENSI.md).
